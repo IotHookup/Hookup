@@ -1,18 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.roman.hookup.MainActivity">
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.03">
 
-</android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/infoText"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.03"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="Main Info"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="108dp"
+                android:layout_height="91dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/photo_camera" />
+
+            <EditText
+                android:id="@+id/firstNameEdit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:inputType="text"
+                android:text="First Name"
+                android:textAlignment="center"
+                android:theme="@style/Theme.App.Base" />
+
+            <EditText
+                android:id="@+id/lastNameEdit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Last Name"
+                android:textAlignment="center"
+                android:theme="@style/Theme.App.Base" />
+
+            <TextView
+                android:id="@+id/contactsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.03"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="Contacts"
+                android:textSize="18dp"
+                android:theme="@style/Theme.App.Base" />
+
+            <TextView
+                android:id="@+id/phoneNumberText"
+                android:layout_width="194dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.03"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="Phone number"
+                android:textSize="15dp" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="1">
+
+                <LinearLayout android:paddingTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/phoneImage"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:paddingBottom="7dp"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="7dp"
+                        app:srcCompat="@drawable/ic_phone_icon" />
+
+                    <EditText
+                        android:id="@+id/phoneNumberEdit"
+                        android:layout_width="183dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:ems="10"
+                        android:inputType="phone"
+                        android:text="  your number here "
+                        android:theme="@style/Theme.App.Base" />
+                </LinearLayout>
+
+            </GridLayout>
+
+            <TextView
+                android:id="@+id/socialNetworksText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.03"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:text="Social networks"
+                android:textSize="15dp" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:columnCount="1">
+
+                <LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/facebookImage"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="10dp"
+                        app:srcCompat="@drawable/fb_logo" />
+
+                    <EditText
+                        android:id="@+id/facebookEdit"
+                        android:layout_width="183dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:text="  facebook login"
+                        android:theme="@style/Theme.App.Base" />
+                </LinearLayout>
+
+                <LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/instaImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:theme="@style/Theme.App.Base"
+                        app:srcCompat="@drawable/instagram_logo" />
+
+                    <EditText
+                        android:id="@+id/instaEdit"
+                        android:layout_width="183dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:text="  instagram login"
+                        android:theme="@style/Theme.App.Base" />
+                </LinearLayout>
+
+                <LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/vkImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        app:srcCompat="@drawable/vk_logo" />
+
+                    <EditText
+                        android:id="@+id/vkEdit"
+                        android:layout_width="183dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:text="  vk login"
+                        android:theme="@style/Theme.App.Base" />
+                </LinearLayout>
+
+            </GridLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
