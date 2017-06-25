@@ -25,6 +25,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Main Info"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <ImageView
@@ -41,8 +42,11 @@
                 android:layout_gravity="center"
                 android:ems="10"
                 android:inputType="text"
+                android:selectAllOnFocus="false"
+                android:singleLine="false"
                 android:text="First Name"
                 android:textAlignment="center"
+                android:textColor="@color/grey"
                 android:theme="@style/Theme.App.Base" />
 
             <EditText
@@ -54,6 +58,7 @@
                 android:inputType="text"
                 android:text="Last Name"
                 android:textAlignment="center"
+                android:textColor="@color/grey"
                 android:theme="@style/Theme.App.Base" />
 
             <TextView
@@ -64,6 +69,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Contacts"
+                android:textColor="@color/black"
                 android:textSize="18dp"
                 android:theme="@style/Theme.App.Base" />
 
@@ -75,6 +81,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Phone number"
+                android:textColor="@color/black"
                 android:textSize="15dp" />
 
             <GridLayout
@@ -102,6 +109,7 @@
                         android:ems="10"
                         android:inputType="phone"
                         android:text="  your number here "
+                        android:textColor="@color/grey"
                         android:theme="@style/Theme.App.Base" />
                 </LinearLayout>
 
@@ -115,6 +123,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="20dp"
                 android:text="Social networks"
+                android:textColor="@color/black"
                 android:textSize="15dp" />
 
             <GridLayout
@@ -142,6 +151,7 @@
                         android:ems="10"
                         android:inputType="text"
                         android:text="  facebook login"
+                        android:textColor="@color/grey"
                         android:theme="@style/Theme.App.Base" />
                 </LinearLayout>
 
@@ -165,6 +175,7 @@
                         android:ems="10"
                         android:inputType="text"
                         android:text="  instagram login"
+                        android:textColor="@color/grey"
                         android:theme="@style/Theme.App.Base" />
                 </LinearLayout>
 
@@ -187,10 +198,37 @@
                         android:ems="10"
                         android:inputType="text"
                         android:text="  vk login"
+                        android:textColor="@color/grey"
                         android:theme="@style/Theme.App.Base" />
+
+
                 </LinearLayout>
 
             </GridLayout>
+
+            <LinearLayout
+                android:layout_width="263dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/saveEditDataButton"
+                    android:layout_width="155dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.42"
+                    android:text="Save" />
+
+                <Button
+                    android:id="@+id/shareToActivityButton"
+                    android:layout_width="153dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.46"
+                    android:text="Share Info" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+
 </LinearLayout>
