@@ -5,10 +5,10 @@
     android:weightSum="1">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/receiveTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Push this button to share your data"
+        android:text="Push this button to receive your data"
         android:textAlignment="center"
         android:textSize="20dp"
         android:layout_marginTop="100dp"
@@ -16,17 +16,16 @@
         />
 
     <Button
-        android:id="@+id/shareButton"
+        android:id="@+id/receiveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
         android:layout_weight="0.50"
-        android:text="Share"
-        android:textSize="30dp"
-        android:textColor="@color/white"
         android:background="@color/orange"
-        />
+        android:text="Receive"
+        android:textColor="@color/white"
+        android:textSize="30dp" />
 
 </LinearLayout>
