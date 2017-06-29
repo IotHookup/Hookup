@@ -4,34 +4,52 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Flag to indicate that Android Beam is available
+    boolean mAndroidBeamAvailable = false;
     private EditText[] textViews;
     private Map<Integer, Boolean> textViewsClicked;
     private Uri imageUri;
     private ImageView cameraView;
     private int PICK_IMAGE = 123;
     private Bitmap camImage;
+    private NfcAdapter mNfcAdapter;
+    // List of URIs to provide to Android Beam
+    private Uri[] mFileUris = new Uri[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +73,26 @@ public class MainActivity extends AppCompatActivity {
         final Button receiveButton = (Button) findViewById(R.id.receiveButton);
         cameraView = (ImageView) findViewById(R.id.cameraView);
 
+        nfcCheck();
+        // Android Beam file transfer is available, continue
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        /*
+         * Instantiate a new FileUriCallback to handle requests for
+         * URIs
+         */
+        FileUriCallback mFileUriCallback = new FileUriCallback();
+        // Set the dynamic callback for URI requests.
+        mNfcAdapter.setBeamPushUrisCallback(mFileUriCallback, this);
+
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
         loadImageFromStorage();
         //saveData();
 
+
         for (int i = 0; i < textViews.length; i++) {
 
             String saved = sharedPref.getString(textViews[i].getId() + "", "");
-            if ((textViews[i].getText().toString() != "")
-                    && (textViews[i].getText().toString() != " ")
-                    && (textViews[i].getText().toString() != "  ")) {
+            if (saved!="" && saved!=" " && saved!="  ") {
                 textViews[i].setText(saved);
             }
 
@@ -191,4 +219,116 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cart:
+                Intent startInfo = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(startInfo);
+                break;
+            case R.id.action_json:
+                makeJSON();
+                break;
+            case R.id.action_save_json:
+                saveJson();
+        }
+        return true;
+    }
+
+    private void nfcCheck() {
+        // NFC isn't available on the device
+        PackageManager pm = this.getPackageManager();
+        if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
+            /*
+             * Disable NFC features here.
+             * For example, disable menu items or buttons that activate
+             * NFC-related features
+             */
+
+            // Android Beam file transfer isn't supported
+        } else if (Build.VERSION.SDK_INT <
+                Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            // If Android Beam isn't available, don't continue.
+            mAndroidBeamAvailable = false;
+            /*
+             * Disable Android Beam file transfer features here.
+             */
+
+            // Android Beam file transfer is available, continue
+        } else {
+            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+            showToast("Your device has NFC feature.");
+        }
+    }
+
+    public JSONArray makeJSON() {
+        JSONArray jArr = new JSONArray();
+        JSONObject jObj = new JSONObject();
+        try {
+
+            textViews[0] = (EditText) findViewById(R.id.firstNameEdit);
+            jObj.put("first_name", ((EditText) findViewById(R.id.firstNameEdit)).getText().toString());
+            jObj.put("second_name", ((EditText) findViewById(R.id.lastNameEdit)).getText().toString());
+            jObj.put("number", ((EditText) findViewById(R.id.phoneNumberEdit)).getText().toString());
+            jObj.put("facebook_login", ((EditText) findViewById(R.id.facebookEdit)).getText().toString());
+            jObj.put("insta_login", ((EditText) findViewById(R.id.instaEdit)).getText().toString());
+            jObj.put("vk_login", ((EditText) findViewById(R.id.vkEdit)).getText().toString());
+
+            jArr.put(jObj);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        showToast(jArr.toString());
+        return jArr;
+    }
+
+    private void saveJson() {
+
+        try {
+            ContextWrapper cw = new ContextWrapper(getApplicationContext());
+            File directory = cw.getExternalFilesDir("saveJsonFolder");
+            Writer output = null;
+            File file = new File(directory.toString(), "save.json");
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(makeJSON().toString());
+            output.close();
+            Toast.makeText(getApplicationContext(), "Composition saved", Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Callback that Android Beam file transfer calls to get
+     * files to share
+     */
+    private class FileUriCallback implements
+            NfcAdapter.CreateBeamUrisCallback {
+        public FileUriCallback() {
+        }
+
+        /**
+         * Create content URIs as needed to share with another device
+         */
+        @Override
+        public Uri[] createBeamUris(NfcEvent event) {
+            return mFileUris;
+        }
+    }
+
+
 }
+
+
+
