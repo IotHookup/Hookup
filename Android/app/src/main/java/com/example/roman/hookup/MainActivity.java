@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -39,8 +37,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Flag to indicate that Android Beam is available
-    boolean mAndroidBeamAvailable = false;
+
     private EditText[] textViews;
     private Map<Integer, Boolean> textViewsClicked;
     private Uri imageUri;
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         final Button receiveButton = (Button) findViewById(R.id.receiveButton);
         cameraView = (ImageView) findViewById(R.id.cameraView);
 
-        nfcCheck();
+
         // Android Beam file transfer is available, continue
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         /*
@@ -239,35 +236,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_save_json:
                 saveJson();
+                break;
+            case R.id.action_open_activity:
+                Intent openActivity = new Intent(MainActivity.this, FriendInfoActivity.class);
+                startActivity(openActivity);
         }
         return true;
     }
 
-    private void nfcCheck() {
-        // NFC isn't available on the device
-        PackageManager pm = this.getPackageManager();
-        if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
-            /*
-             * Disable NFC features here.
-             * For example, disable menu items or buttons that activate
-             * NFC-related features
-             */
-
-            // Android Beam file transfer isn't supported
-        } else if (Build.VERSION.SDK_INT <
-                Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            // If Android Beam isn't available, don't continue.
-            mAndroidBeamAvailable = false;
-            /*
-             * Disable Android Beam file transfer features here.
-             */
-
-            // Android Beam file transfer is available, continue
-        } else {
-            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-            showToast("Your device has NFC feature.");
-        }
-    }
 
     public JSONArray makeJSON() {
         JSONArray jArr = new JSONArray();

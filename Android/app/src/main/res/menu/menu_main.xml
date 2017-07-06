@@ -17,4 +17,11 @@
         android:orderInCategory="10"
         android:showAsAction="always"/>
 
+    <item
+        android:title="Open FriendInfoActivity"
+        android:id="@+id/action_open_activity"
+        android:orderInCategory="10"
+        android:showAsAction="always"/>
+
+
 </menu>

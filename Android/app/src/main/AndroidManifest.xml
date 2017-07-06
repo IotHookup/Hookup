@@ -4,11 +4,11 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    ﻿<uses-permission android:name="android.permission.NFC" />\
-
+    ﻿
+    <uses-permission android:name="android.permission.NFC" />\
     <uses-feature
         android:name="android.hardware.nfc"
-        android:required="false" />
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +29,9 @@
         <activity android:name=".ShareActivity" />
         <activity android:name=".ReceiveActivity" />
         <activity android:name=".InfoActivity" >
+        </activity>
+        <activity android:name=".FriendInfoActivity"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     </application>
 

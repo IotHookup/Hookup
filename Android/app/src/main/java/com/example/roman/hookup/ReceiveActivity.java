@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
@@ -22,16 +20,7 @@ public class ReceiveActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
-
-        Button receiveButton = (Button) findViewById(R.id.receiveButton);
-        receiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showToast("Taking data from another phone...");
-                handleViewIntent();
-            }
-        });
-
+        handleViewIntent();
     }
 
     /*

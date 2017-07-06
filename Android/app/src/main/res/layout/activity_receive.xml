@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:weightSum="1">
 
     <TextView
-        android:id="@+id/receiveTextView"
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Push this button to receive your data"
+        android:text="Now tap devices \n to receive the info."
         android:textAlignment="center"
-        android:textSize="20dp"
-        android:layout_marginTop="100dp"
+        android:textSize="30dp"
+        android:layout_marginTop="60dp"
         android:textColor="@color/black"
+
         />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="238dp"
+        android:layout_height="218dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/beam" />
+
     <Button
-        android:id="@+id/receiveButton"
-        android:layout_width="match_parent"
+        android:id="@+id/button"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_weight="0.50"
-        android:background="@color/orange"
-        android:text="Receive"
+        android:layout_gravity="center"
+        android:background="@color/black"
         android:textColor="@color/white"
-        android:textSize="30dp" />
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="10dp"
+        android:text="Without NFC" />
 
 </LinearLayout>
