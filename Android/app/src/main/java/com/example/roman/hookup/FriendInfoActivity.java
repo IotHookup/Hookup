@@ -1,6 +1,10 @@
 package com.example.roman.hookup;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -52,6 +56,75 @@ public class FriendInfoActivity extends AppCompatActivity {
             }
         });
 
+        numberText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String number = numberText.getText().toString();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+number));
+                startActivity(intent);
+            }
+        });
+
+        faceText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = getApplicationContext();
+                String profile = faceText.getText().toString();
+                showToast("Opening facebook app");
+                try {
+                    context.getPackageManager()
+                            .getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("fb://facewebmodal/f?href=" + "https://www.facebook.com/" + profile))); //Trys to make intent with FB's URI
+                } catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://www.facebook.com/" + profile))); //catches and opens a url to the desired page
+                }
+            }
+        });
+
+        instaText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("Opening instagram app");
+                String profile = instaText.getText().toString();
+                Uri uri = Uri.parse("http://instagram.com/_u/" + profile);
+                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+
+                likeIng.setPackage("com.instagram.android");
+
+                try {
+                    startActivity(likeIng);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://instagram.com/" + profile)));
+                }
+            }
+        });
+
+        vkText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("Opening vk app");
+                String profile = vkText.getText().toString();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vkontakte://profile/" + profile));
+                try {
+                    int id = Integer.parseInt(profile);
+                    try {
+                        startActivity(intent);
+
+                    } catch (ActivityNotFoundException e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://vk.com/" + id)));
+                    }
+                } catch (NumberFormatException nfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://vk.com/" + profile)));
+                }
+            }
+        });
+
     }
 
 
@@ -99,6 +172,7 @@ public class FriendInfoActivity extends AppCompatActivity {
 
         return parsedData;
     }
+
 
     private void showToast(String message) {
         Toast.makeText(FriendInfoActivity.this, message, Toast.LENGTH_SHORT).show();

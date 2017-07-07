@@ -21,7 +21,7 @@
             android:text="Purpose of the program."
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="50dp" />
+            android:textSize="35dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -44,7 +44,7 @@
             android:text="About us."
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="50dp" />
+            android:textSize="35dp" />
 
         <TextView
             android:id="@+id/textView4"
@@ -66,7 +66,7 @@
             android:text="Contacts."
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="50dp" />
+            android:textSize="35dp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -97,7 +97,7 @@
                 android:text="Web site."
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50dp" />
+                android:textSize="35dp" />
             <Button
                 android:id="@+id/button"
                 android:layout_width="200dp"
