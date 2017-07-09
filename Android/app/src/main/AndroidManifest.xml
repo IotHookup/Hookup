@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.NFC" />\
     <uses-feature
         android:name="android.hardware.nfc"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -19,19 +19,26 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".ShareActivity" />
+        <activity android:name=".ShareActivity" >
+
+        </activity>
         <activity android:name=".ReceiveActivity" />
         <activity android:name=".InfoActivity" >
+
         </activity>
         <activity android:name=".FriendInfoActivity"
             android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity android:name=".TemporaryInfoActivity">
+
         </activity>
     </application>
 

@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -40,19 +38,19 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText[] textViews;
     private Map<Integer, Boolean> textViewsClicked;
+
     private Uri imageUri;
     private ImageView cameraView;
     private int PICK_IMAGE = 123;
     private Bitmap camImage;
-    private NfcAdapter mNfcAdapter;
-    // List of URIs to provide to Android Beam
-    private Uri[] mFileUris = new Uri[10];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /*Lists for Edit Texts*/
+
         textViews = new EditText[6];
         textViewsClicked = new HashMap<>();
 
@@ -71,28 +69,81 @@ public class MainActivity extends AppCompatActivity {
         cameraView = (ImageView) findViewById(R.id.cameraView);
 
 
-        // Android Beam file transfer is available, continue
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        /*
-         * Instantiate a new FileUriCallback to handle requests for
-         * URIs
-         */
-        FileUriCallback mFileUriCallback = new FileUriCallback();
-        // Set the dynamic callback for URI requests.
-        mNfcAdapter.setBeamPushUrisCallback(mFileUriCallback, this);
-
-        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
         loadImageFromStorage();
-        //saveData();
+        loadData();
+        clearTextViews();
 
-
-        for (int i = 0; i < textViews.length; i++) {
-
-            String saved = sharedPref.getString(textViews[i].getId() + "", "");
-            if (saved!="" && saved!=" " && saved!="  ") {
-                textViews[i].setText(saved);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveData();
+                showToast("Your data was saved");
             }
+        });
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openShareActivity = new Intent(MainActivity.this, ShareActivity.class);
+                openShareActivity.putExtra("first name", textViews[0].getText().toString());
+                openShareActivity.putExtra("last name", textViews[1].getText().toString());
+                openShareActivity.putExtra("number", textViews[2].getText().toString());
+                openShareActivity.putExtra("facebook", textViews[3].getText().toString());
+                openShareActivity.putExtra("insta", textViews[4].getText().toString());
+                openShareActivity.putExtra("vk", textViews[5].getText().toString());
+                startActivity(openShareActivity);
+            }
+        });
+        receiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openReceiveActivity = new Intent(MainActivity.this, ReceiveActivity.class);
+                startActivity(openReceiveActivity);
+            }
+        });
+        cameraView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                startActivityForResult(gallery, PICK_IMAGE);
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cart:
+                Intent startInfo = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(startInfo);
+                break;
+            case R.id.action_json:
+                makeJSON();
+                break;
+            case R.id.action_save_json:
+                saveJson();
+                break;
+            case R.id.action_open_activity:
+                Intent openActivity = new Intent(MainActivity.this, FriendInfoActivity.class);
+                startActivity(openActivity);
+        }
+        return true;
+    }
+
+
+    private void showToast(String message) {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void clearTextViews() {
+        for (int i = 0; i < textViews.length; i++) {
             textViews[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,48 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-        /*Save the data.*/
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveData();
-                showToast("Your data was saved");
-            }
-        });
-
-
-
-        /*Share activity.*/
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent openShareActivity = new Intent(MainActivity.this, ShareActivity.class);
-                startActivity(openShareActivity);
-            }
-        });
-
-        /*Receive activity.*/
-        receiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent openReceiveActivity = new Intent(MainActivity.this, ReceiveActivity.class);
-                startActivity(openReceiveActivity);
-            }
-        });
-
-        cameraView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(gallery, PICK_IMAGE);
-            }
-        });
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     public int saveData() {
@@ -162,17 +171,15 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((resultCode == RESULT_OK) && (requestCode == PICK_IMAGE)) {
-            imageUri = data.getData();
-            cameraView.setImageURI(imageUri);
-            try {
-                camImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                saveImageToInternalStorage(camImage);
-            } catch (IOException e) {
-                e.printStackTrace();
+    private void loadData() {
+
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+
+        for (int i = 0; i < textViews.length; i++) {
+
+            String saved = sharedPref.getString(textViews[i].getId() + "", "");
+            if (saved != "" && saved != " " && saved != "  ") {
+                textViews[i].setText(saved);
             }
 
         }
@@ -203,6 +210,22 @@ public class MainActivity extends AppCompatActivity {
         return directory.getAbsolutePath();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((resultCode == RESULT_OK) && (requestCode == PICK_IMAGE)) {
+            imageUri = data.getData();
+            cameraView.setImageURI(imageUri);
+            try {
+                camImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                saveImageToInternalStorage(camImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     private void loadImageFromStorage() {
 
         try {
@@ -215,33 +238,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_cart:
-                Intent startInfo = new Intent(MainActivity.this, InfoActivity.class);
-                startActivity(startInfo);
-                break;
-            case R.id.action_json:
-                makeJSON();
-                break;
-            case R.id.action_save_json:
-                saveJson();
-                break;
-            case R.id.action_open_activity:
-                Intent openActivity = new Intent(MainActivity.this, FriendInfoActivity.class);
-                startActivity(openActivity);
-        }
-        return true;
     }
 
 
@@ -284,26 +280,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
-    /**
-     * Callback that Android Beam file transfer calls to get
-     * files to share
-     */
-    private class FileUriCallback implements
-            NfcAdapter.CreateBeamUrisCallback {
-        public FileUriCallback() {
-        }
-
-        /**
-         * Create content URIs as needed to share with another device
-         */
-        @Override
-        public Uri[] createBeamUris(NfcEvent event) {
-            return mFileUris;
-        }
-    }
-
-
 }
 
 

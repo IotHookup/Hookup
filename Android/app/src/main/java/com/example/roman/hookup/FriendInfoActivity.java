@@ -40,13 +40,29 @@ public class FriendInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_info);
         setTitle("Received info");
+
+        /*
         try {
             readJson();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        firstNameText = (TextView) findViewById(R.id.firstNameText);
+        lastNameText = (TextView) findViewById(R.id.lastNameText);
+        numberText = (TextView) findViewById(R.id.numberText);
+        faceText = (TextView) findViewById(R.id.faceText);
+        instaText = (TextView) findViewById(R.id.instaText);
+        vkText = (TextView) findViewById(R.id.vkText);
+
+
+        Bundle bundle = getIntent().getExtras();
+
+        String info = "First name, Last name";
+        Toast.makeText(getApplicationContext(), "Result is:" + regular(info), Toast.LENGTH_SHORT).show();
+
 
         closeButton = (Button) findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +77,7 @@ public class FriendInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String number = numberText.getText().toString();
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:"+number));
+                intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);
             }
         });
@@ -176,6 +192,15 @@ public class FriendInfoActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(FriendInfoActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private String regular(String info) {
+        boolean b = info.matches("First");
+        String result = "";
+        if (b) {
+            result = "cool!";
+        }
+        return result;
     }
 }
 
