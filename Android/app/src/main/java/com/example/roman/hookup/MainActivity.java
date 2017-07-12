@@ -4,11 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,34 +12,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.journeyapps.barcodescanner.CaptureActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
 
-
     private EditText[] textViews;
-    private Map<Integer, Boolean> textViewsClicked;
-
-    private Uri imageUri;
-    private ImageView cameraView;
-    private int PICK_IMAGE = 123;
-    private Bitmap camImage;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +35,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         /*Lists for Edit Texts*/
 
-        textViews = new EditText[6];
-        textViewsClicked = new HashMap<>();
+        textViews = new EditText[5];
 
         /*Initialize the list*/
-        textViews[0] = (EditText) findViewById(R.id.firstNameEdit);
-        textViews[1] = (EditText) findViewById(R.id.lastNameEdit);
-        textViews[2] = (EditText) findViewById(R.id.phoneNumberEdit);
-        textViews[3] = (EditText) findViewById(R.id.facebookEdit);
-        textViews[4] = (EditText) findViewById(R.id.instaEdit);
-        textViews[5] = (EditText) findViewById(R.id.vkEdit);
+        textViews[0] = (EditText) findViewById(R.id.fullNameEdit);
+        textViews[1] = (EditText) findViewById(R.id.phoneNumberEdit);
+        textViews[2] = (EditText) findViewById(R.id.facebookEdit);
+        textViews[3] = (EditText) findViewById(R.id.instaEdit);
+        textViews[4] = (EditText) findViewById(R.id.vkEdit);
 
         /*Three functional buttons.*/
         final Button saveButton = (Button) findViewById(R.id.saveEditDataButton);
         final Button shareButton = (Button) findViewById(R.id.shareToActivityButton);
         final Button receiveButton = (Button) findViewById(R.id.receiveButton);
-        cameraView = (ImageView) findViewById(R.id.cameraView);
 
 
-        loadImageFromStorage();
+        //loadImageFromStorage();
         loadData();
-        clearTextViews();
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,34 +60,43 @@ public class MainActivity extends AppCompatActivity {
                 showToast("Your data was saved");
             }
         });
+
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent openShareActivity = new Intent(MainActivity.this, ShareActivity.class);
-                openShareActivity.putExtra("first name", textViews[0].getText().toString());
-                openShareActivity.putExtra("last name", textViews[1].getText().toString());
-                openShareActivity.putExtra("number", textViews[2].getText().toString());
-                openShareActivity.putExtra("facebook", textViews[3].getText().toString());
-                openShareActivity.putExtra("insta", textViews[4].getText().toString());
-                openShareActivity.putExtra("vk", textViews[5].getText().toString());
+                openShareActivity.putExtra("full name", textViews[0].getText().toString());
+                openShareActivity.putExtra("number", textViews[1].getText().toString());
+                openShareActivity.putExtra("facebook", textViews[2].getText().toString());
+                openShareActivity.putExtra("insta", textViews[3].getText().toString());
+                openShareActivity.putExtra("vk", textViews[4].getText().toString());
                 startActivity(openShareActivity);
             }
         });
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openReceiveActivity = new Intent(MainActivity.this, ReceiveActivity.class);
-                startActivity(openReceiveActivity);
+                Intent intent = new Intent(getApplicationContext(), CaptureActivity.class);
+                intent.setAction("com.google.zxing.client.android.SCAN");
+                intent.putExtra("SAVE_HISTORY", false);
+                startActivityForResult(intent, 0);
             }
         });
-        cameraView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
 
-                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(gallery, PICK_IMAGE);
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                Intent Result = new Intent(getApplicationContext(), ReceiveActivity.class);
+                Result.putExtra("string", contents);
+                startActivity(Result);
+                // Handle successful scan
+            } else if (resultCode == RESULT_CANCELED) {
+                // Handle cancel
             }
-        });
+        }
     }
 
     @Override
@@ -124,15 +113,13 @@ public class MainActivity extends AppCompatActivity {
                 Intent startInfo = new Intent(MainActivity.this, InfoActivity.class);
                 startActivity(startInfo);
                 break;
-            case R.id.action_json:
-                makeJSON();
-                break;
             case R.id.action_save_json:
                 saveJson();
                 break;
             case R.id.action_open_activity:
-                Intent openActivity = new Intent(MainActivity.this, FriendInfoActivity.class);
+                Intent openActivity = new Intent(MainActivity.this, ReceiveActivity.class);
                 startActivity(openActivity);
+                break;
         }
         return true;
     }
@@ -140,21 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void clearTextViews() {
-        for (int i = 0; i < textViews.length; i++) {
-            textViews[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!(textViewsClicked.keySet().contains(v.getId())
-                            && textViewsClicked.get(v.getId()))) {
-                        ((EditText) v).setText("");
-                        textViewsClicked.put(v.getId(), true);
-                    }
-                }
-            });
-        }
     }
 
     public int saveData() {
@@ -172,72 +144,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
-
         for (int i = 0; i < textViews.length; i++) {
-
             String saved = sharedPref.getString(textViews[i].getId() + "", "");
             if (saved != "" && saved != " " && saved != "  ") {
                 textViews[i].setText(saved);
             }
-
         }
-    }
-
-    private String saveImageToInternalStorage(Bitmap bitmapImage) {
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-
-        File directory = cw.getExternalFilesDir("imageDir");
-        // Create imageDir
-        File myPath = new File(directory.toString(), "profile.jpg");
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(myPath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((resultCode == RESULT_OK) && (requestCode == PICK_IMAGE)) {
-            imageUri = data.getData();
-            cameraView.setImageURI(imageUri);
-            try {
-                camImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                saveImageToInternalStorage(camImage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    private void loadImageFromStorage() {
-
-        try {
-            ContextWrapper cw = new ContextWrapper(getApplicationContext());
-            File directory = cw.getExternalFilesDir("imageDir");
-            File f = new File(directory.toString(), "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            cameraView.setImageBitmap(b);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
     }
 
 
@@ -246,9 +159,7 @@ public class MainActivity extends AppCompatActivity {
         JSONObject jObj = new JSONObject();
         try {
 
-            textViews[0] = (EditText) findViewById(R.id.firstNameEdit);
-            jObj.put("first_name", ((EditText) findViewById(R.id.firstNameEdit)).getText().toString());
-            jObj.put("second_name", ((EditText) findViewById(R.id.lastNameEdit)).getText().toString());
+            jObj.put("full_name", ((EditText) findViewById(R.id.fullNameEdit)).getText().toString());
             jObj.put("number", ((EditText) findViewById(R.id.phoneNumberEdit)).getText().toString());
             jObj.put("facebook_login", ((EditText) findViewById(R.id.facebookEdit)).getText().toString());
             jObj.put("insta_login", ((EditText) findViewById(R.id.instaEdit)).getText().toString());

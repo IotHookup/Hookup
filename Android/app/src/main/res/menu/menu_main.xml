@@ -6,11 +6,7 @@
         android:icon="@drawable/info"
         android:orderInCategory="100"
         android:showAsAction="always"/>
-    <item
-        android:title="MakeJson"
-        android:id="@+id/action_json"
-        android:orderInCategory="10"
-        android:showAsAction="always"/>
+
     <item
         android:title="SaveJson"
         android:id="@+id/action_save_json"
@@ -20,6 +16,12 @@
     <item
         android:title="Open FriendInfoActivity"
         android:id="@+id/action_open_activity"
+        android:orderInCategory="10"
+        android:showAsAction="always"/>
+
+    <item
+        android:title="Open TemporaryActivity"
+        android:id="@+id/action_open_temporary"
         android:orderInCategory="10"
         android:showAsAction="always"/>
 
