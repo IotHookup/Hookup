@@ -1,7 +1,6 @@
 package com.example.roman.hookup;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,8 +19,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-
-import java.io.File;
 
 public class ShareActivity extends AppCompatActivity {
 
@@ -35,46 +31,20 @@ public class ShareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
-        nfcCheck();
-        checkIfEnabledNFC();
-        sendNFC();
 
         Bundle bundle = getIntent().getExtras();
-        QRContent = "First name: " + bundle.getString("first name") + "\n" + "Last name: "
-                + bundle.getString("last name")  + "\n" + "Phone number: "
+        QRContent = " First name: " + bundle.getString("full name") + "\n" + " Last name: "
+                + bundle.getString("last name")  + "\n" + " Phone number: "
                 + bundle.getString("number") + "\n"
-                + "Facebook login: " + bundle.getString("facebook") + "\n" + "Instagram login: "
-                + bundle.getString("insta") + "\n" + "VK login: " + bundle.getString("vk");
+                + " Facebook login: " + bundle.getString("facebook") + "\n" + " Instagram login: "
+                + bundle.getString("insta") + "\n" + " VK login: " + bundle.getString("vk");
         generateQR();
-
-
     }
 
     private void showToast(String message) {
         Toast.makeText(ShareActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void sendNFC() {
-         /*
-         * Create a list of URIs, get a File,
-         * and set its permissions
-         */
-
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        File directory = cw.getExternalFilesDir("saveJsonFolder");
-        File requestFile = new File(directory, "save.json");
-        requestFile.setReadable(true, false);
-
-        // Get a URI for the File and add it to the list of URIs
-        Uri fileUri = Uri.fromFile(requestFile);
-        if (fileUri != null) {
-            mFileUris[0] = fileUri;
-        } else {
-            Log.e("My Activity", "No File URI available for file.");
-            showToast("Something went wrong.");
-        }
-
-    }
 
     private void checkIfEnabledNFC() {
         Context context = getApplicationContext();
@@ -117,7 +87,7 @@ public class ShareActivity extends AppCompatActivity {
         // this is a small sample use of the QRCodeEncoder class from zxing
         QRCodeWriter writer = new QRCodeWriter();
         try {
-            BitMatrix bitMatrix = writer.encode(QRContent, BarcodeFormat.QR_CODE, 512, 512);
+            BitMatrix bitMatrix = writer.encode(QRContent, BarcodeFormat.QR_CODE, 812, 812);
             int width = bitMatrix.getWidth();
             int height = bitMatrix.getHeight();
             Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);

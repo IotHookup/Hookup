@@ -30,15 +30,11 @@
         <activity android:name=".ShareActivity" >
 
         </activity>
-        <activity android:name=".ReceiveActivity" />
         <activity android:name=".InfoActivity" >
 
         </activity>
-        <activity android:name=".FriendInfoActivity"
+        <activity android:name=".ReceiveActivity"
             android:windowSoftInputMode="stateHidden">
-        </activity>
-        <activity android:name=".TemporaryInfoActivity">
-
         </activity>
     </application>
 
