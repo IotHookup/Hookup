@@ -10,8 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.03">
+        android:layout_height="497dp">
 
 
         <LinearLayout
@@ -23,12 +22,12 @@
             <TextView
                 android:layout_marginTop="10dp"
                 android:id="@+id/infoText"
-                android:layout_width="136dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.03"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:text="Main Info"
+                android:text="@string/main_info"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -64,7 +63,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:ems="10"
-                            android:hint="Mark Twen"
+                            android:hint="@string/name_hint"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:theme="@style/AppTheme" />
@@ -75,7 +74,7 @@
                             android:layout_height="21dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
-                            android:text="full name"
+                            android:text="@string/name_label"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="13dp" />
@@ -108,7 +107,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:ems="10"
-                            android:hint="+38099101010"
+                            android:hint="@string/number_hint"
                             android:inputType="phone"
                             android:textAlignment="center"
                             android:textColor="@color/black"
@@ -120,7 +119,7 @@
                             android:layout_height="21dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
-                            android:text="phone number"
+                            android:text="@string/number_label"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="13dp" />
@@ -137,7 +136,7 @@
                 android:layout_weight="0.03"
                 android:paddingLeft="10dp"
                 android:paddingTop="20dp"
-                android:text="Social networks"
+                android:text="@string/social"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -175,7 +174,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:ems="10"
-                            android:hint="markTwen"
+                            android:hint="@string/face_login_hint"
                             android:inputType="text"
                             android:text=""
                             android:textAlignment="center"
@@ -188,7 +187,7 @@
                             android:layout_height="21dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
-                            android:text="facebook login"
+                            android:text="@string/face_label"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="13dp" />
@@ -224,7 +223,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:ems="10"
-                            android:hint="mark_twen"
+                            android:hint="@string/insta_login_hint"
                             android:inputType="text"
                             android:text=""
                             android:textAlignment="center"
@@ -237,7 +236,7 @@
                             android:layout_height="21dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
-                            android:text="instagram login"
+                            android:text="@string/insta_label"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="13dp" />
@@ -273,7 +272,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:ems="10"
-                            android:hint="markooo"
+                            android:hint="@string/vk_login_hint"
                             android:inputType="text"
                             android:text=""
                             android:textAlignment="center"
@@ -286,7 +285,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
-                            android:text="vk login"
+                            android:text="@string/vk_label"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="13dp" />
@@ -297,53 +296,47 @@
 
             </GridLayout>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:layout_height="0dip"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/saveEditDataButton"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="0"
-                        android:background="@color/black"
-                        android:text="Save"
-                        android:textColor="@color/white" />
-
-                    <Button
-                        android:id="@+id/shareToActivityButton"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="0"
-                        android:background="@color/black"
-                        android:text="Share Info"
-                        android:textColor="@color/white" />
-
-                    <Button
-                        android:id="@+id/receiveButton"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="0"
-                        android:background="@color/black"
-                        android:text="Get info"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                >
-
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saveEditDataButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1.0"
+            android:background="@color/black"
+            android:text="@string/save_button"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/shareToActivityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1.0"
+            android:background="@color/black"
+            android:text="@string/share_button"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/receiveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1.0"
+            android:background="@color/black"
+            android:text="@string/get_button"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 
 </LinearLayout>

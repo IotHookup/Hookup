@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HookUp</string>
+    <string name="face_label">facebook логін</string>
+    <string name="get_button">Отримати дані</string>
+    <string name="insta_label">інстаграм логін</string>
+    <string name="insta_login_hint">romanvit</string>
+    <string name="main_info">Основна інформація</string>
+    <string name="save_button">Зберегти</string>
+    <string name="share_button">Поділитися</string>
+    <string name="social">Соціальні мережі</string>
+    <string name="vk_label">вконтакті логін</string>
+    <string name="number_label">номер телефону</string>
+    <string name="name_label">повне ім\'я</string>
+    <string name="share_activity_text">Покажіть цей QR-код, щоб передати інформацію.</string>
+    <string name="receive_label">Отримана інформація</string>
+    <string name="about_label">Про нас.</string>
+    <string name="about_text">Ми студенти Львівської політехніки, напрямку \"Інтернет речей\".</string>
+    <string name="button_text">Перейти до сайту</string>
+    <string name="contacts_label">Контакти.</string>
+    <string name="purpose_label">Ціль програми.</string>
+    <string name="purpose_text">Додаток створений для простого способу додавання друзів у соціальних мережах.</string>
+    <string name="web_label">Сайт.</string>
+    <string name="info">Інфо</string>
+    <string name="close_button_text">Закрити</string>
+</resources>

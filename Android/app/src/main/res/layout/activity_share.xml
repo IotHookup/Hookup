@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:weightSum="1">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,52 +21,24 @@
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:text="Show this QR code \n to your friend."
+                android:layout_marginTop="60dp"
+                android:text="@string/share_activity_text"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="30sp"
 
                 />
 
             <ImageView
-                android:paddingTop="10dp"
+                android:contentDescription="QR code"
                 android:id="@+id/QRImageView"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/site_qr" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Or tap devices \n to share the info."
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="30dp"
-
-                />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="238dp"
-                android:layout_height="218dp"
-                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                app:srcCompat="@drawable/beam" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/black"
-                android:text="Share by apps"
-                android:textColor="@color/white" />
+                app:srcCompat="@drawable/site_qr" />
 
         </LinearLayout>
     </ScrollView>

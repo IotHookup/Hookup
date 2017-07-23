@@ -1,29 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Info"
+        android:title="@string/info"
         android:id="@+id/action_cart"
         android:icon="@drawable/info"
         android:orderInCategory="100"
         android:showAsAction="always"/>
-
-    <item
-        android:title="SaveJson"
-        android:id="@+id/action_save_json"
-        android:orderInCategory="10"
-        android:showAsAction="always"/>
-
-    <item
-        android:title="Open FriendInfoActivity"
-        android:id="@+id/action_open_activity"
-        android:orderInCategory="10"
-        android:showAsAction="always"/>
-
-    <item
-        android:title="Open TemporaryActivity"
-        android:id="@+id/action_open_temporary"
-        android:orderInCategory="10"
-        android:showAsAction="always"/>
-
-
 </menu>

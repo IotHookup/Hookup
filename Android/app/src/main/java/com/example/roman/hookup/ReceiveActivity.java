@@ -24,10 +24,13 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ReceiveActivity extends AppCompatActivity {
 
     private Button closeButton;
+
     private TextView fullNameText;
     private TextView numberText;
     private TextView faceText;
@@ -39,7 +42,6 @@ public class ReceiveActivity extends AppCompatActivity {
         try {
             ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);
             if (applicationInfo.enabled) {
-                // http://stackoverflow.com/a/24547437/1048340
                 uri = Uri.parse("fb://facewebmodal/f?href=" + url);
             }
         } catch (PackageManager.NameNotFoundException ignored) {
@@ -71,7 +73,7 @@ public class ReceiveActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
-        setTitle("Received info");
+        setTitle(R.string.receive_label);
 
 
         fullNameText = (TextView) findViewById(R.id.fullNameEdit);
@@ -188,26 +190,24 @@ public class ReceiveActivity extends AppCompatActivity {
         return parsedData;
     }
 
-
     private void showToast(String message) {
         Toast.makeText(ReceiveActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     public void parse(String info) {
-        String fullName, number, face, insta, vk = "";
-        String[] elements = info.split(" ");
-        fullName = elements[3] + " " + elements[4];
-        fullName = fullName.replaceAll("\n", "");
-        number = elements[10];
-        face = elements[13];
-        insta = elements[16];
-        vk = elements[19];
-
-        fullNameText.setText(fullName);
-        numberText.setText(number);
-        faceText.setText(face);
-        instaText.setText(insta);
-        vkText.setText(vk);
+        String[] array = new String[5];
+        int i = 0;
+        Pattern p = Pattern.compile("\\:(.*?)\\;");
+        Matcher m = p.matcher(info);
+        while (m.find()) {
+            array[i] = m.group(1);
+            i++;
+        }
+        fullNameText.setText(array[0]);
+        numberText.setText(array[1]);
+        faceText.setText(array[2]);
+        instaText.setText(array[3]);
+        vkText.setText(array[4]);
     }
 }
 
