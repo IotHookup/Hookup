@@ -1,10 +1,11 @@
-package com.example.roman.hookup;
+package com.example.roman.lookup;
 
-import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,46 +30,26 @@ import java.util.regex.Pattern;
 
 public class ReceiveActivity extends AppCompatActivity {
 
-    private Button closeButton;
-
     private TextView fullNameText;
     private TextView numberText;
     private TextView faceText;
     private TextView instaText;
     private TextView vkText;
 
-    public static Intent newFacebookIntent(PackageManager pm, String url) {
-        Uri uri = Uri.parse(url);
-        try {
-            ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);
-            if (applicationInfo.enabled) {
-                uri = Uri.parse("fb://facewebmodal/f?href=" + url);
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-        return new Intent(Intent.ACTION_VIEW, uri);
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveData();
     }
 
-    public static Intent newInstagramProfileIntent(PackageManager pm, String url) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        try {
-            if (pm.getPackageInfo("com.instagram.android", 0) != null) {
-                if (url.endsWith("/")) {
-                    url = url.substring(0, url.length() - 1);
-                }
-                final String username = url.substring(url.lastIndexOf("/") + 1);
-                // http://stackoverflow.com/questions/21505941/intent-to-open-instagram-user-profile-on-android
-                intent.setData(Uri.parse("http://instagram.com/_u/" + username));
-                intent.setPackage("com.instagram.android");
-                return intent;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        intent.setData(Uri.parse(url));
-        return intent;
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveData();
     }
 
+    int i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,12 +63,18 @@ public class ReceiveActivity extends AppCompatActivity {
         instaText = (TextView) findViewById(R.id.instaEdit);
         vkText = (TextView) findViewById(R.id.vkEdit);
 
+
         Bundle bundle = getIntent().getExtras();
-        String info = bundle.getString("string");
-        parse(info);
+        if (bundle != null) {
+            String info = bundle.getString("string");
+            parse(info);
+        } else {
+            loadData();
+            setTitle(R.string.receive_label1);
+        }
 
 
-        closeButton = (Button) findViewById(R.id.closeButton);
+        Button closeButton = (Button) findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,48 +89,46 @@ public class ReceiveActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", numberText.getText().toString());
+                clipboard.setPrimaryClip(clip);
             }
+
         });
 
         faceText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String login = faceText.getText().toString();
-                login = "https://www.facebook.com/" + login;
-                PackageManager pm = getPackageManager();
-                startActivity(newFacebookIntent(pm, login));
+                Toast.makeText(ReceiveActivity.this, R.string.Facebook_open, Toast.LENGTH_SHORT).show();
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.facebook.katana");
+                startActivity(launchIntent);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", faceText.getText().toString());
+                clipboard.setPrimaryClip(clip);
             }
         });
 
         instaText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String login = instaText.getText().toString();
-                login = "https://www.instagram.com/" + login;
-                PackageManager pm = getPackageManager();
-                startActivity(newInstagramProfileIntent(pm, login));
+                Toast.makeText(ReceiveActivity.this, R.string.Instagram_open, Toast.LENGTH_SHORT).show();
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+                startActivity(launchIntent);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", instaText.getText().toString());
+                clipboard.setPrimaryClip(clip);
             }
         });
 
         vkText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("Opening vk app");
-                String profile = vkText.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vkontakte://profile/" + profile));
-                try {
-                    int id = Integer.parseInt(profile);
-                    try {
-                        startActivity(intent);
-
-                    } catch (ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://vk.com/" + id)));
-                    }
-                } catch (NumberFormatException nfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://vk.com/" + profile)));
-                }
+                Toast.makeText(ReceiveActivity.this, R.string.VK_open, Toast.LENGTH_SHORT).show();
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.vkontakte.android");
+                startActivity(launchIntent);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", vkText.getText().toString());
+                clipboard.setPrimaryClip(clip);
             }
         });
 
@@ -190,9 +175,6 @@ public class ReceiveActivity extends AppCompatActivity {
         return parsedData;
     }
 
-    private void showToast(String message) {
-        Toast.makeText(ReceiveActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
 
     public void parse(String info) {
         String[] array = new String[5];
@@ -208,6 +190,27 @@ public class ReceiveActivity extends AppCompatActivity {
         faceText.setText(array[2]);
         instaText.setText(array[3]);
         vkText.setText(array[4]);
+    }
+
+    public int saveData() {
+        SharedPreferences sharedPref = ReceiveActivity.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(fullNameText.getId() + "", fullNameText.getText().toString());
+        editor.putString(numberText.getId() + "", numberText.getText().toString());
+        editor.putString(faceText.getId() + "", faceText.getText().toString());
+        editor.putString(instaText.getId() + "", instaText.getText().toString());
+        editor.putString(vkText.getId() + "", vkText.getText().toString());
+        editor.commit();
+        return 0;
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPref = ReceiveActivity.this.getPreferences(Context.MODE_PRIVATE);
+        fullNameText.setText(sharedPref.getString(fullNameText.getId() + "", ""));
+        numberText.setText(sharedPref.getString(numberText.getId() + "", ""));
+        faceText.setText(sharedPref.getString(faceText.getId() + "", ""));
+        instaText.setText(sharedPref.getString(instaText.getId() + "", ""));
+        vkText.setText(sharedPref.getString(vkText.getId() + "", ""));
     }
 }
 

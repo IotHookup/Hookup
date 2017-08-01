@@ -1,4 +1,4 @@
-package com.example.roman.hookup;
+package com.example.roman.lookup;
 
 import android.Manifest;
 import android.content.Context;
@@ -28,10 +28,24 @@ import java.io.FileWriter;
 import java.io.Writer;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity   {
 
     private static final int PERMS_REQUEST_CODE = 123;
     private EditText[] textViews;
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        requestSavePermission();
+        saveData();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        requestSavePermission();
+        saveData();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         textViews[4] = (EditText) findViewById(R.id.vkEdit);
 
         /*Three functional buttons.*/
-        final Button saveButton = (Button) findViewById(R.id.saveEditDataButton);
+        final Button historyButton = (Button) findViewById(R.id.historyButton);
         final Button shareButton = (Button) findViewById(R.id.shareToActivityButton);
         final Button receiveButton = (Button) findViewById(R.id.receiveButton);
 
@@ -58,12 +72,11 @@ public class MainActivity extends AppCompatActivity {
         loadData();
 
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSavePermission();
-                saveData();
-                showToast("Your data was saved");
+                Intent intent = new Intent(MainActivity.this, ReceiveActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -98,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     /*If QR scanner scanned then do.*/
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
@@ -108,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(Result);
                 // Handle successful scan
             } else if (resultCode == RESULT_CANCELED) {
-                showToast("Info was not scanned.");
+                Toast.makeText(MainActivity.this, R.string.QR_error, Toast.LENGTH_SHORT).show();
                 // Handle cancel
             }
         }
@@ -133,10 +148,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-    private void showToast(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
 
     public int saveData() {
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);

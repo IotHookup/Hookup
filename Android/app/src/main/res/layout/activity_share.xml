@@ -9,36 +9,45 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/grey">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="60dp"
                 android:text="@string/share_activity_text"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:textSize="30sp"
 
                 />
 
-            <ImageView
-                android:contentDescription="QR code"
-                android:id="@+id/QRImageView"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                app:srcCompat="@drawable/site_qr" />
+                android:background="@drawable/shape">
+
+                <ImageView
+                    android:id="@+id/QRImageView"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="QR code"
+                    app:srcCompat="@drawable/site_qr" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

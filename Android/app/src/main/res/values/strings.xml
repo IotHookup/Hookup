@@ -1,24 +1,25 @@
 <resources>
-    <string name="app_name">HookUp</string>
+    <string name="app_name">LookUp</string>
     <string name="main_info">Main info</string>
-    <string name="name_hint" translatable="false">Roman</string>
+    <string name="name_hint" translatable="false">Mark Twain</string>
     <string name="name_label">full name</string>
-    <string name="number_hint" translatable="false">0991395006</string>
     <string name="number_label">phone number</string>
-    <string name="face_login_hint" translatable="false">romanvit13</string>
+    <string name="number_hint">(541) 754-3010</string>
+    <string name="face_login_hint" translatable="false">mark_twain</string>
     <string name="face_label">facebook login</string>
-    <string name="insta_login_hint">romanvit</string>
+    <string name="insta_login_hint" translatable="false">marktwain</string>
     <string name="insta_label">instagram login</string>
-    <string name="vk_login_hint" translatable="false">romich_vit</string>
+    <string name="vk_login_hint" translatable="false">markTwain</string>
     <string name="vk_label">vk login</string>
     <string name="social">Social networks</string>
     
-    <string name="save_button">Save</string>
+    <string name="history_button">History</string>
     <string name="share_button">Share</string>
     <string name="get_button">Get info</string>
 
-    <string name="share_activity_text">Show this QR code\n to your friend.</string>
+    <string name="share_activity_text">Scan me.</string>
     <string name="receive_label">Received info</string>
+    <string name="receive_label1">Last friend</string>
 
     <string name="info">Info</string>
     <string name="purpose_label">Purpose of the program.</string>
@@ -31,4 +32,11 @@
 
     <string name="button_text">Go to site</string>
     <string name="close_button_text">close</string>
+
+    <string name="data_saved">Your data was saved!</string>
+    <string name="QR_error">Info was not scanned.</string>
+    <string name="VK_open">Opening VK app.</string>
+    <string name="Facebook_open">Opening Facebook app.</string>
+    <string name="Instagram_open">Opening Instagram app.</string>
+    <string name="save_button"></string>
 </resources>

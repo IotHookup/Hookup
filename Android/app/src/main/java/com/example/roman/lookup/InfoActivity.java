@@ -1,4 +1,4 @@
-package com.example.roman.hookup;
+package com.example.roman.lookup;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,7 +18,7 @@ public class InfoActivity extends AppCompatActivity {
         siteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("http://23.226.68.238:8080/"); // missing 'http://' will cause crashed
+                Uri uri = Uri.parse("http://23.226.68.238:8080/");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
