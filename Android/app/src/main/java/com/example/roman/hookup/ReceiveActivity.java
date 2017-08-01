@@ -1,5 +1,6 @@
-package com.example.roman.lookup;
+package com.example.roman.hookup;
 
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -36,7 +37,6 @@ public class ReceiveActivity extends AppCompatActivity {
     private TextView instaText;
     private TextView vkText;
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -49,7 +49,6 @@ public class ReceiveActivity extends AppCompatActivity {
         saveData();
     }
 
-    int i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,11 +98,18 @@ public class ReceiveActivity extends AppCompatActivity {
         faceText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String login = faceText.getText().toString();
                 Toast.makeText(ReceiveActivity.this, R.string.Facebook_open, Toast.LENGTH_SHORT).show();
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.facebook.katana");
-                startActivity(launchIntent);
+                if (launchIntent != null) {
+                    startActivity(launchIntent);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/" + login));
+                    startActivity(intent);
+                }
+
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", faceText.getText().toString());
+                ClipData clip = ClipData.newPlainText("", login);
                 clipboard.setPrimaryClip(clip);
             }
         });
@@ -111,9 +117,19 @@ public class ReceiveActivity extends AppCompatActivity {
         instaText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String login = instaText.getText().toString();
                 Toast.makeText(ReceiveActivity.this, R.string.Instagram_open, Toast.LENGTH_SHORT).show();
-                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.instagram.android");
-                startActivity(launchIntent);
+                Uri uri = Uri.parse("http://instagram.com/_u/" + login);
+                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+                likeIng.setPackage("com.instagram.android");
+
+                try {
+                    startActivity(likeIng);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://instagram.com/" + login)));
+                }
+
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("", instaText.getText().toString());
                 clipboard.setPrimaryClip(clip);
@@ -123,9 +139,15 @@ public class ReceiveActivity extends AppCompatActivity {
         vkText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String login = vkText.getText().toString();
                 Toast.makeText(ReceiveActivity.this, R.string.VK_open, Toast.LENGTH_SHORT).show();
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.vkontakte.android");
-                startActivity(launchIntent);
+                if (launchIntent != null) {
+                    startActivity(launchIntent);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.vk.com/" + login));
+                    startActivity(intent);
+                }
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("", vkText.getText().toString());
                 clipboard.setPrimaryClip(clip);
@@ -185,11 +207,11 @@ public class ReceiveActivity extends AppCompatActivity {
             array[i] = m.group(1);
             i++;
         }
-        fullNameText.setText(array[0]);
-        numberText.setText(array[1]);
-        faceText.setText(array[2]);
-        instaText.setText(array[3]);
-        vkText.setText(array[4]);
+        fullNameText.setText(array[0].replaceAll("\\s+", ""));
+        numberText.setText(array[1].replaceAll("\\s+", ""));
+        faceText.setText(array[2].replaceAll("\\s+", ""));
+        instaText.setText(array[3].replaceAll("\\s+", ""));
+        vkText.setText(array[4].replaceAll("\\s+", ""));
     }
 
     public int saveData() {

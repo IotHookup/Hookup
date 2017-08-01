@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LookUp</string>
+    <string name="app_name">HookUp</string>
     <string name="face_label">Логін facebook</string>
     <string name="get_button">Отримати</string>
     <string name="insta_label">Логін instagram</string>

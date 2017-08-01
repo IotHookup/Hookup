@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LookUp</string>
+    <string name="app_name">HookUp</string>
     <string name="main_info">Main info</string>
     <string name="name_hint" translatable="false">Mark Twain</string>
     <string name="name_label">full name</string>

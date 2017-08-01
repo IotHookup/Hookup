@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LookUp</string>
+    <string name="app_name">HookUp</string>
     <string name="Facebook_open">Открывается Facebook.</string>
     <string name="Instagram_open">Открывается Instagram.</string>
     <string name="QR_error">Не просканировано.</string>
