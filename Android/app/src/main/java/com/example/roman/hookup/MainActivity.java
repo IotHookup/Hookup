@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
 import org.json.JSONArray;
@@ -28,19 +30,20 @@ import java.io.FileWriter;
 import java.io.Writer;
 
 
-public class MainActivity extends AppCompatActivity   {
+public class MainActivity extends AppCompatActivity {
 
     private static final int PERMS_REQUEST_CODE = 123;
     private EditText[] textViews;
+    private ShowcaseView sv;
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         saveData();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         saveData();
     }
@@ -65,11 +68,13 @@ public class MainActivity extends AppCompatActivity   {
         final Button receiveButton = (Button) findViewById(R.id.receiveButton);
 
 
+        if (firstRun() == 1) {
+            firstGuide();
+        }
+
         /*Load saved data*/
         loadData();
-
         requestSavePermission();
-
 
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +113,6 @@ public class MainActivity extends AppCompatActivity   {
             }
         });
     }
-
 
 
     /*If QR scanner scanned then do.*/
@@ -239,6 +243,80 @@ public class MainActivity extends AppCompatActivity   {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, PERMS_REQUEST_CODE);
         }
+    }
+
+    private int firstRun() {
+
+        final String PREFS_NAME = "MyPrefsFile";
+        final String PREF_VERSION_CODE_KEY = "version_code";
+        final int DOESNT_EXIST = -1;
+
+        int result = 0;
+
+        int currentVersionCode = BuildConfig.VERSION_CODE;
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        int savedVersionCode = prefs.getInt(PREF_VERSION_CODE_KEY, DOESNT_EXIST);
+        if (currentVersionCode == savedVersionCode) {
+            result = 0;
+        } else if (savedVersionCode == DOESNT_EXIST) {
+            result = 1;
+        } else if (currentVersionCode > savedVersionCode) {
+            result = 1;
+        }
+        prefs.edit().putInt(PREF_VERSION_CODE_KEY, currentVersionCode).apply();
+        return result;
+    }
+
+    private void firstGuide(){
+        final ViewTarget target1 = new ViewTarget(R.id.fullNameEdit, this);
+        final ViewTarget target2 = new ViewTarget(R.id.phoneNumberEdit, this);
+        final ViewTarget target3 = new ViewTarget(R.id.facebookEdit, this);
+        final ViewTarget target4 = new ViewTarget(R.id.shareToActivityButton, this);
+        final ViewTarget target5 = new ViewTarget(R.id.receiveButton, this);
+
+
+        sv = new ShowcaseView.Builder(this)
+                .withMaterialShowcase()
+                .setTarget(target1)
+                .setContentTitle("Write here your name")
+                .setStyle(R.style.CustomShowcaseMaterial)
+                .build();
+
+        sv.overrideButtonClick(new View.OnClickListener() {
+            int count1 = 0;
+
+            @Override
+            public void onClick(View v) {
+                count1++;
+                switch (count1) {
+                    case 1:
+                        sv.setTarget(target2);
+                        sv.setContentTitle("Write here your phone number");
+                        sv.setButtonText("next");
+                        break;
+
+                    case 2:
+                        sv.setTarget(target3);
+                        sv.setContentTitle("Write here your login of facebook or instagram");
+                        sv.setButtonText("next");
+                        break;
+                    case 3:
+                        sv.setTarget(target4);
+                        sv.setContentTitle("Tap this button to share your contacts");
+                        sv.setButtonText("next");
+                        break;
+                    case 4:
+                        sv.setTarget(target5);
+                        sv.setContentTitle("Tap this button to get info from your friend");
+                        sv.setButtonText("next");
+                        break;
+                    case 5:
+                        sv.hide();
+                        break;
+                }
+            }
+        });
     }
 
 }
