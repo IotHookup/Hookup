@@ -9,25 +9,29 @@
 
 
     <ScrollView
-        android:layout_weight="100"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/grey">
+        android:layout_height="match_parent"
+        android:layout_weight="98.5"
+        android:background="@color/grey"
+        >
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="100">
 
 
             <TextView
                 android:id="@+id/infoText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:layout_marginTop="10dp"
                 android:layout_weight="0.03"
                 android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:paddingTop="10dp"
                 android:text="@string/main_info"
                 android:textColor="@color/black"
@@ -36,39 +40,42 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:columnCount="1">
+                android:columnCount="1"
+                android:paddingTop="10dp">
 
 
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/xz"
-                    android:weightSum="1">
+                    android:background="@drawable/xz">
 
                     <ImageView
                         android:id="@+id/user"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:paddingBottom="7dp"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
+                        android:contentDescription="contact"
+                        android:paddingBottom="7dp"
                         android:paddingTop="7dp"
                         app:srcCompat="@drawable/user" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
                         <EditText
                             android:id="@+id/fullNameEdit"
                             android:layout_width="183dp"
-                            android:layout_marginRight="20dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
                             android:ems="10"
                             android:hint="@string/name_hint"
+                            android:inputType="text"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:theme="@style/AppTheme" />
@@ -78,34 +85,35 @@
                             android:layout_width="194dp"
                             android:layout_height="21dp"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
                             android:text="@string/name_label"
                             android:textAlignment="center"
+                            android:layout_marginBottom="5dp"
                             android:textColor="@color/black"
-                            android:textSize="13dp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/xz"
-                    android:weightSum="1">
+                    android:background="@drawable/xz">
 
                     <ImageView
                         android:id="@+id/phoneImage"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:paddingBottom="7dp"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
+                        android:contentDescription="phone"
+                        android:paddingBottom="7dp"
                         android:paddingTop="7dp"
                         app:srcCompat="@drawable/ic_phone_icon" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
                         <EditText
@@ -113,9 +121,6 @@
                             android:layout_width="183dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:ems="10"
                             android:hint="@string/number_hint"
                             android:inputType="phone"
                             android:textAlignment="center"
@@ -127,16 +132,14 @@
                             android:layout_width="194dp"
                             android:layout_height="21dp"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
                             android:text="@string/number_label"
+                            android:layout_marginBottom="5dp"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:textSize="13dp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </GridLayout>
-
 
             <TextView
                 android:id="@+id/socialNetworksText"
@@ -144,6 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.03"
                 android:paddingLeft="10dp"
+                android:textAlignment="center"
                 android:paddingTop="20dp"
                 android:text="@string/social"
                 android:textColor="@color/black"
@@ -151,8 +155,7 @@
 
             <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
+                android:layout_height="160dp"
                 android:layout_marginTop="10dp"
                 android:columnCount="1"
                 android:paddingBottom="10dp">
@@ -166,8 +169,10 @@
                         android:id="@+id/facebookImage"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:paddingLeft="10dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="0.10"
+                        android:contentDescription="facebook"
                         android:paddingBottom="12dp"
                         android:paddingTop="10dp"
                         app:srcCompat="@drawable/fb_logo_small" />
@@ -175,7 +180,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
-                        android:background="@drawable/xz"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
 
@@ -184,9 +190,6 @@
                             android:layout_width="183dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:ems="10"
                             android:hint="@string/face_login_hint"
                             android:inputType="text"
                             android:text=""
@@ -199,12 +202,10 @@
                             android:layout_width="194dp"
                             android:layout_height="21dp"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
                             android:text="@string/face_label"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:textSize="13dp" />
+                            android:textSize="14sp" />
 
 
                     </LinearLayout>
@@ -213,21 +214,26 @@
 
                 <LinearLayout
                     android:layout_gravity="center"
-                    android:background="@drawable/xz"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/xz">
 
                     <ImageView
                         android:id="@+id/instaImage"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:contentDescription="instagram"
                         android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
+
                         android:paddingTop="10dp"
                         app:srcCompat="@drawable/insta_logo_small" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
 
@@ -236,9 +242,6 @@
                             android:layout_width="183dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:ems="10"
                             android:hint="@string/insta_login_hint"
                             android:inputType="text"
                             android:text=""
@@ -251,65 +254,11 @@
                             android:layout_width="194dp"
                             android:layout_height="21dp"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
                             android:text="@string/insta_label"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:textSize="13dp" />
+                            android:textSize="14sp" />
 
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:background="@drawable/xz"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp">
-
-                    <ImageView
-                        android:id="@+id/vkImage"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:paddingLeft="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        app:srcCompat="@drawable/vk_logo_small" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:orientation="vertical"
-                        android:weightSum="1">
-
-
-                        <EditText
-                            android:id="@+id/vkEdit"
-                            android:layout_width="183dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:ems="10"
-                            android:hint="@string/vk_login_hint"
-                            android:inputType="text"
-                            android:text=""
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:theme="@style/AppTheme" />
-
-                        <TextView
-                            android:id="@+id/vk_login_text"
-                            android:layout_width="194dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:text="@string/vk_label"
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:textSize="13dp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -318,7 +267,6 @@
             </GridLayout>
 
         </LinearLayout>
-
     </ScrollView>
 
     <LinearLayout
@@ -334,7 +282,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1.0"
-            android:background="@color/black"
+            android:background="@color/violet"
+            android:textSize="15sp"
             android:text="@string/share_button"
             android:textColor="@color/white" />
         <Button
@@ -343,7 +292,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1.0"
-            android:background="@color/black"
+            android:textSize="15sp"
+            android:background="@color/violet"
             android:text="@string/get_button"
             android:textColor="@color/white" />
 
@@ -353,7 +303,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1.0"
-            android:background="@color/black"
+            android:textSize="15sp"
+            android:background="@color/violet"
             android:text="@string/history_button"
             android:textColor="@color/white" />
 

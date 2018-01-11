@@ -36,14 +36,12 @@ public class MainActivity extends AppCompatActivity   {
     @Override
     public void onPause(){
         super.onPause();
-        requestSavePermission();
         saveData();
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        requestSavePermission();
         saveData();
     }
 
@@ -53,14 +51,13 @@ public class MainActivity extends AppCompatActivity   {
         setContentView(R.layout.activity_main);
 
         /*List for Edit Texts*/
-        textViews = new EditText[5];
+        textViews = new EditText[4];
 
         /*Initialize the list*/
         textViews[0] = (EditText) findViewById(R.id.fullNameEdit);
         textViews[1] = (EditText) findViewById(R.id.phoneNumberEdit);
         textViews[2] = (EditText) findViewById(R.id.facebookEdit);
         textViews[3] = (EditText) findViewById(R.id.instaEdit);
-        textViews[4] = (EditText) findViewById(R.id.vkEdit);
 
         /*Three functional buttons.*/
         final Button historyButton = (Button) findViewById(R.id.historyButton);
@@ -70,6 +67,8 @@ public class MainActivity extends AppCompatActivity   {
 
         /*Load saved data*/
         loadData();
+
+        requestSavePermission();
 
 
         historyButton.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity   {
                 openShareActivity.putExtra("number", textViews[1].getText().toString());
                 openShareActivity.putExtra("facebook", textViews[2].getText().toString());
                 openShareActivity.putExtra("insta", textViews[3].getText().toString());
-                openShareActivity.putExtra("vk", textViews[4].getText().toString());
                 startActivity(openShareActivity);
             }
         });
@@ -183,7 +181,6 @@ public class MainActivity extends AppCompatActivity   {
             jObj.put("number", ((EditText) findViewById(R.id.phoneNumberEdit)).getText().toString());
             jObj.put("facebook_login", ((EditText) findViewById(R.id.facebookEdit)).getText().toString());
             jObj.put("insta_login", ((EditText) findViewById(R.id.instaEdit)).getText().toString());
-            jObj.put("vk_login", ((EditText) findViewById(R.id.vkEdit)).getText().toString());
 
             jArr.put(jObj);
 

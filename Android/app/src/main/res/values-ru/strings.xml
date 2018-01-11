@@ -22,8 +22,9 @@
     <string name="number_label">Номер телефона</string>
     <string name="purpose_label">Цель программы</string>
     <string name="purpose_text">Программа создана для простого способа добавления друзей в социальных сетях.</string>
-    <string name="receive_label">Полученая информация.</string>
-    <string name="receive_label1">Последнее знакомство.</string>
+    <string name="receive_label">Полученая информация</string>
+    <string name="receive_label1">Последнее знакомство</string>
+    <string name="receive_label3">Неправильный формат QR-кода.</string>
     <string name="save_button">Сохранить</string>
     <string name="share_activity_text">Просканируйте QR код.</string>
     <string name="share_button">Поделиться</string>

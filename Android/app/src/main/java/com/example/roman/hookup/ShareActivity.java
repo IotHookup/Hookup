@@ -19,8 +19,7 @@ public class ShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
 
         Bundle bundle = getIntent().getExtras();
-        String QRContent = "";
-        QRContent = " Full name: " + bundle.getString("full name") + ";\n"
+        String QRContent = " Full name: " + bundle.getString("full name") + ";\n"
                 + " Phone number: " + bundle.getString("number") + ";\n"
                 + " Facebook login: " + bundle.getString("facebook") + ";\n"
                 + " Instagram login: " + bundle.getString("insta") + ";\n"

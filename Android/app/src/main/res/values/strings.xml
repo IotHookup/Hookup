@@ -17,9 +17,10 @@
     <string name="share_button">Share</string>
     <string name="get_button">Get info</string>
 
-    <string name="share_activity_text">Scan me.</string>
+    <string name="share_activity_text">Scan me</string>
     <string name="receive_label">Received info</string>
     <string name="receive_label1">Last friend</string>
+    <string name="receive_label3">Wrong format of QR-code.</string>
 
     <string name="info">Info</string>
     <string name="purpose_label">Purpose of the program.</string>
@@ -27,7 +28,7 @@
     <string name="about_label">About us.</string>
     <string name="about_text">We are students from Lviv Polytechnic University, \'Internet of Things\' faculty. </string>
     <string name="contacts_label">Contacts.</string>
-    <string name="contacts_text" translatable="false">kr.igor@gmail.com \n romanvit13@gmail.com</string>
+    <string name="contacts_text" translatable="false"> kr.ihor.wow@gmail.com \n romanvit13@gmail.com</string>
     <string name="web_label">Website.</string>
 
     <string name="button_text">Go to site</string>

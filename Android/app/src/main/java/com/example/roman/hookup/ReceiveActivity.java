@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +30,14 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.widget.Toast.makeText;
+
 public class ReceiveActivity extends AppCompatActivity {
 
     private TextView fullNameText;
     private TextView numberText;
     private TextView faceText;
     private TextView instaText;
-    private TextView vkText;
 
     @Override
     protected void onPause() {
@@ -60,7 +62,6 @@ public class ReceiveActivity extends AppCompatActivity {
         numberText = (TextView) findViewById(R.id.phoneNumberEdit);
         faceText = (TextView) findViewById(R.id.facebookEdit);
         instaText = (TextView) findViewById(R.id.instaEdit);
-        vkText = (TextView) findViewById(R.id.vkEdit);
 
 
         Bundle bundle = getIntent().getExtras();
@@ -99,7 +100,7 @@ public class ReceiveActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String login = faceText.getText().toString();
-                Toast.makeText(ReceiveActivity.this, R.string.Facebook_open, Toast.LENGTH_SHORT).show();
+                makeText(ReceiveActivity.this, R.string.Facebook_open, Toast.LENGTH_SHORT).show();
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.facebook.katana");
                 if (launchIntent != null) {
                     startActivity(launchIntent);
@@ -118,7 +119,7 @@ public class ReceiveActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String login = instaText.getText().toString();
-                Toast.makeText(ReceiveActivity.this, R.string.Instagram_open, Toast.LENGTH_SHORT).show();
+                makeText(ReceiveActivity.this, R.string.Instagram_open, Toast.LENGTH_SHORT).show();
                 Uri uri = Uri.parse("http://instagram.com/_u/" + login);
                 Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
                 likeIng.setPackage("com.instagram.android");
@@ -136,24 +137,6 @@ public class ReceiveActivity extends AppCompatActivity {
             }
         });
 
-        vkText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String login = vkText.getText().toString();
-                Toast.makeText(ReceiveActivity.this, R.string.VK_open, Toast.LENGTH_SHORT).show();
-                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.vkontakte.android");
-                if (launchIntent != null) {
-                    startActivity(launchIntent);
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.vk.com/" + login));
-                    startActivity(intent);
-                }
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", vkText.getText().toString());
-                clipboard.setPrimaryClip(clip);
-            }
-        });
-
     }
 
     private HashMap<String, String> readJson() throws IOException, JSONException {
@@ -161,7 +144,6 @@ public class ReceiveActivity extends AppCompatActivity {
         numberText = (TextView) findViewById(R.id.phoneNumberEdit);
         faceText = (TextView) findViewById(R.id.facebookEdit);
         instaText = (TextView) findViewById(R.id.instaEdit);
-        vkText = (TextView) findViewById(R.id.vkEdit);
 
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getExternalFilesDir("saveJsonFolder");
@@ -185,14 +167,12 @@ public class ReceiveActivity extends AppCompatActivity {
         faceText.setText(faceLogin);
         String instaLogin = obj.getString("insta_login");
         instaText.setText(instaLogin);
-        String vkLogin = obj.getString("vk_login");
-        vkText.setText(vkLogin);
+
 
         parsedData.put("full_name", firstName);
         parsedData.put("number", number);
         parsedData.put("facebook_login", faceLogin);
         parsedData.put("insta_login", instaLogin);
-        parsedData.put("vk_login", vkLogin);
 
         return parsedData;
     }
@@ -203,16 +183,28 @@ public class ReceiveActivity extends AppCompatActivity {
         int i = 0;
         Pattern p = Pattern.compile("\\:(.*?)\\;");
         Matcher m = p.matcher(info);
+
         while (m.find()) {
-            array[i] = m.group(1);
+            if (m.group(1) != null) {
+                array[i] = m.group(1);
+            } else array[i] = "nothing";
             i++;
         }
-        fullNameText.setText(array[0].replaceAll("\\s+", ""));
-        numberText.setText(array[1].replaceAll("\\s+", ""));
-        faceText.setText(array[2].replaceAll("\\s+", ""));
-        instaText.setText(array[3].replaceAll("\\s+", ""));
-        vkText.setText(array[4].replaceAll("\\s+", ""));
+
+        if (array[1] != null) {
+            fullNameText.setText(array[0].replaceAll("\\s+", ""));
+            numberText.setText(array[1].replaceAll("\\s+", ""));
+            faceText.setText(array[2].replaceAll("\\s+", ""));
+            instaText.setText(array[3].replaceAll("\\s+", ""));
+        } else {
+            setTitle(R.string.receive_label3);
+            Toast.makeText(ReceiveActivity.this, R.string.QR_error, Toast.LENGTH_SHORT).show();
+            setContentView(R.layout.activity_receive_error);
+            EditText receivedText = (EditText) findViewById(R.id.receivedText);
+            receivedText.setText(info);
+        }
     }
+
 
     public int saveData() {
         SharedPreferences sharedPref = ReceiveActivity.this.getPreferences(Context.MODE_PRIVATE);
@@ -221,7 +213,6 @@ public class ReceiveActivity extends AppCompatActivity {
         editor.putString(numberText.getId() + "", numberText.getText().toString());
         editor.putString(faceText.getId() + "", faceText.getText().toString());
         editor.putString(instaText.getId() + "", instaText.getText().toString());
-        editor.putString(vkText.getId() + "", vkText.getText().toString());
         editor.commit();
         return 0;
     }
@@ -232,7 +223,6 @@ public class ReceiveActivity extends AppCompatActivity {
         numberText.setText(sharedPref.getString(numberText.getId() + "", ""));
         faceText.setText(sharedPref.getString(faceText.getId() + "", ""));
         instaText.setText(sharedPref.getString(instaText.getId() + "", ""));
-        vkText.setText(sharedPref.getString(vkText.getId() + "", ""));
     }
 }
 
